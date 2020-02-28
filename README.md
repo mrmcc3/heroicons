@@ -1,5 +1,12 @@
 # Heroicons as Hiccup Data
 
+Add to `deps.edn`
+```clojure
+mrmcc3/heroicons {:git/url "https://github.com/mrmcc3/heroicons"
+                  :sha     "... commit sha ..."}
+```
+
+Example usage
 ```clojure
 (require '[mrmcc3.heroicons.outline.md :as heroicons])
 

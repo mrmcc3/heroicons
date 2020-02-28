@@ -1,9 +1,7 @@
 (ns user
   (:require
     [clojure.java.io :as io]
-    [clojure.string :as str]
-    [mrmcc3.heroicons.outline.md :as heroicons]
-    )
+    [clojure.string :as str])
   (:import (org.jsoup Jsoup)))
 
 (defn tag [element]
@@ -33,14 +31,12 @@
         data (-> file slurp Jsoup/parseBodyFragment
                  (.getElementsByTag "svg")
                  first element->data
-                 (update 1 (fn [attrs] `(merge ~attrs ~arg))))]
-    `(defn ~icon ~doc
-       ([] (~icon {}))
-       ([~arg] ~data))))
+                 (update 1 (fn [attrs] `(~'merge ~attrs ~arg))))]
+    `(~'defn ~icon ~doc ([] (~icon {})) ([~arg] ~data))))
 
 (defn ns-form [ns]
   (let [excludes '[filter]]
-    `(ns ~ns (:refer-clojure :exclude ~excludes))))
+    `(~'ns ~ns (:refer-clojure :exclude ~excludes))))
 
 (defn spit-icons [dir ns]
   (let [ns-file    (io/file "src-clj" (str (str/replace ns "." "/") ".cljc"))
