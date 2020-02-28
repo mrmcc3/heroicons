@@ -2,7 +2,9 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as str])
-  (:import (org.jsoup Jsoup)))
+  (:import
+    (org.jsoup Jsoup)
+    (org.jsoup.parser Parser)))
 
 (defn tag [element]
   (-> element .tagName keyword))
@@ -28,7 +30,8 @@
   (let [icon (icon-symbol file)
         arg  'attr-map
         doc  (str icon " heroicon data. Optionally pass an attr-map to merge with the svg attributes")
-        data (-> file slurp Jsoup/parseBodyFragment
+        data (-> file slurp
+                 (Jsoup/parse "" (Parser/xmlParser))
                  (.getElementsByTag "svg")
                  first element->data
                  (update 1 (fn [attrs] `(~'merge ~attrs ~arg))))]
